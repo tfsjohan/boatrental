@@ -1,4 +1,5 @@
 ﻿using CarRental.CommonTypes;
+using CarRental.Data;
 
 namespace CarRental.PriceService;
 
