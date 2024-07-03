@@ -1,5 +1,6 @@
 using CarRental.CommonTypes;
 using CarRental.Data;
+using CarRental.PriceService;
 using CarRental.RentalService;
 using Moq;
 
@@ -18,7 +19,9 @@ public class CheckoutCarTests
             .Setup(x => x.GetBookingsForCarAtDate(registrationPlate, It.IsAny<DateTime>()))
             .Returns(new List<Rental>());
 
-        var service = new Mock<CarRentalService>(repository.Object)
+        var priceService = new Mock<IPriceService>();
+
+        var service = new Mock<CarRentalService>(repository.Object, priceService.Object)
         {
             CallBase = true
         };
@@ -63,7 +66,7 @@ public class CheckoutCarTests
         );
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => service.Object.CheckoutCar(request));
+        Assert.Throws<ArgumentException>(() => service.Object.CheckoutCar(request));
     }
 
     [Fact]
