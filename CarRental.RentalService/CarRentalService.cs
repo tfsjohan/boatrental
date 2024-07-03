@@ -3,6 +3,7 @@ using CarRental.PriceService;
 
 namespace CarRental.RentalService;
 
+// ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
 public class CarRentalService(
     ICarRentalsRepository carRentalsRepository,
     IPriceService priceService
@@ -56,7 +57,10 @@ public class CarRentalService(
         var distanceDriven = request.Odometer - rental.Odometer;
         var daysRented = (int)(request.ReturnDate - rental.CheckoutDate).TotalDays;
 
-        var totalCost = priceService.CalculatePrice(rental.CarType, daysRented, distanceDriven);
+        var totalCost = priceService.CalculatePrice(
+            rental.CarType,
+            daysRented,
+            distanceDriven);
 
         rental.ReturnOdometer = request.Odometer;
         rental.ReturnDate = request.ReturnDate;

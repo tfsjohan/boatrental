@@ -1,0 +1,26 @@
+@CarRental.RentalApi_HostAddress = http://localhost:5182
+
+GET {{CarRental.RentalApi_HostAddress}}/checkoutcar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123456",
+  "carRegistrationPlate": "ABC123",
+  "customerId": "123456",
+  "carType": 0,
+  "checkoutDate": "2024-06-20T09:00:00",
+  "odometer": 1000
+}
+
+###
+
+GET {{CarRental.RentalApi_HostAddress}}/returncar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123456",
+  "returnDate": "2024-06-24T17:00:00",
+  "odometer": 1200
+}
+
+###
