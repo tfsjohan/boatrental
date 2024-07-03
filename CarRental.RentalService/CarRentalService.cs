@@ -13,8 +13,8 @@ public class CarRentalService(
     {
         /* Note to reviewer:
          * In a real-world scenario, I would add more data validation logic here,
-         * like making sure customer and car actually exists, that odometer is a positive
-         * value.
+         * like making sure customer and car actually exists and add data validation
+         * attributes to the request object.
          */
 
         if (!IsCarAvailable(request.CarRegistrationPlate))
@@ -25,6 +25,12 @@ public class CarRentalService(
              * we are using a generic exception here.
              */
             throw new InvalidOperationException("Car is not available for checkout");
+        }
+
+        var existingRental = GetRental(request.BookingNumber);
+        if (existingRental is not null)
+        {
+            throw new InvalidOperationException("Booking number already used");
         }
 
         var carRental = new Rental
@@ -43,6 +49,11 @@ public class CarRentalService(
     public virtual CarReturnResponse ReturnCar(CarReturnRequest request)
     {
         var rental = carRentalsRepository.GetCarRental(request.BookingNumber);
+
+        if (IsReturned(rental))
+        {
+            throw new InvalidOperationException("Car is already returned");
+        }
 
         if (request.ReturnDate < rental.CheckoutDate)
         {
@@ -99,5 +110,19 @@ public class CarRentalService(
         }
 
         return (uint)Math.Ceiling((returnDate - checkoutDate).TotalDays);
+    }
+
+    private bool IsReturned(Rental rental) => rental.ReturnDate is not null;
+
+    private Rental? GetRental(string bookingNumber)
+    {
+        try
+        {
+            return carRentalsRepository.GetCarRental(bookingNumber);
+        }
+        catch (KeyNotFoundException)
+        {
+            return null;
+        }
     }
 }

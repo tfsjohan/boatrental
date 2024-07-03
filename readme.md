@@ -1,7 +1,37 @@
 # Car Rental System
 
-## Todo
+## General info
 
-- [ ] Should not be able to checkout order number that has been returned
-- [ ] Should not be able to return order number that has been returned
+### Data repositories
 
+Because the specification states that it will be used for different customers with different data storage
+requirements, I have only created interfaces for repositories and used in-memory repositories for the
+implementation. This way, it is easy to change the data storage method in the future.
+
+### Data validation
+
+In a real world application, I would spend more time on proper data validation. To avoid unnecessary complexity
+in this task, I have only added some basic validation.
+
+### Error handling
+
+If this was a real project I would create more subclasses for exceptions instead of using magic strings. Doing
+so would make it easier to test and refactor when needed.
+
+### Logging
+
+No logging is used at all in the demo project.
+
+### Testing
+
+All functionality required for the specification have unit tests. The web api and data repositories do not
+have tests because they are not part of the core assignment, but still needed to have something to show.
+
+### Web API
+
+The web api is very basic and only has the functionality required for the specification. It is not meant to be
+used in a production environment.
+
+## More specific info
+
+I've added notes to the reviewer inline in the code where I thought it was necessary. 

@@ -309,9 +309,6 @@ public class ReturnCarTests
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
         repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
-        repository
             .Setup(x => x.SaveCarRental(rental))
             .Verifiable();
 
@@ -331,5 +328,44 @@ public class ReturnCarTests
         // Assert
 
         repository.Verify(x => x.SaveCarRental(rental), Times.Once);
+    }
+
+    [Fact]
+    public void ReturnCar_Should_ThrowException_When_CarIsAlreadyReturned()
+    {
+        // Arrange
+        const string bookingNumber = "123";
+
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = DateTime.UtcNow.AddDays(-1),
+            Odometer = 0,
+            ReturnDate = DateTime.UtcNow,
+            ReturnOdometer = 10
+        };
+
+        var repository = new Mock<ICarRentalsRepository>();
+        repository
+            .Setup(x => x.GetCarRental(rental.BookingNumber))
+            .Returns(rental);
+
+        var service = new CarRentalServiceBuilder()
+            .WithCarRentalsRepository(repository.Object)
+            .Build();
+
+        var request = new CarReturnRequest(
+            bookingNumber,
+            DateTime.UtcNow,
+            10
+        );
+
+        // Act & Assert
+
+        var exception = Assert.Throws<InvalidOperationException>(() => service.ReturnCar(request));
+        Assert.Contains("Car is already returned", exception.Message);
     }
 }

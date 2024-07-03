@@ -43,7 +43,7 @@ public class CheckoutCarTests
     }
 
     [Fact]
-    public void Checkout_Should_ThrowException_WhenCarIsNotAvailable()
+    public void Checkout_Should_ThrowException_When_CarIsNotAvailable()
     {
         // Arrange 
         const string registrationPlate = "ABC123";
@@ -78,6 +78,44 @@ public class CheckoutCarTests
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => service.CheckoutCar(request));
+    }
+
+    [Fact]
+    public void Checkout_Should_ThrowException_When_BookingNumberUsed()
+    {
+        // Arrange 
+        const string bookingNumber = "123";
+        var rental = new Rental()
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CheckoutDate = DateTime.Now.AddHours(-1),
+            CarType = CarTypeEnum.Compact,
+            CustomerId = "456",
+            Odometer = 100
+        };
+
+        var repository = new Mock<ICarRentalsRepository>();
+        repository
+            .Setup(x => x.GetCarRental(bookingNumber))
+            .Returns(rental);
+
+        var service = new CarRentalServiceBuilder()
+            .WithCarRentalsRepository(repository.Object)
+            .Build();
+
+        var request = new CarCheckoutRequest(
+            bookingNumber,
+            "CBA321",
+            "456",
+            CarTypeEnum.StationWagon,
+            DateTime.Now,
+            1000
+        );
+
+        // Act & Assert
+        var exception = Assert.Throws<InvalidOperationException>(() => service.CheckoutCar(request));
+        Assert.Contains("Booking number already used", exception.Message);
     }
 
     [Fact]
