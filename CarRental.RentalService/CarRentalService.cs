@@ -27,16 +27,14 @@ public class CarRentalService(
         }
 
         var carRental = new Rental
-        (
-            BookingNumber: request.BookingNumber,
-            CarRegistrationPlate: request.CarRegistrationPlate,
-            CustomerId: request.CustomerId,
-            CarType: request.CarType,
-            CheckoutDate: request.CheckoutDate,
-            Odometer: request.Odometer,
-            ReturnDate: null,
-            ReturnOdometer: null
-        );
+        {
+            BookingNumber = request.BookingNumber,
+            CarRegistrationPlate = request.CarRegistrationPlate,
+            CustomerId = request.CustomerId,
+            CarType = request.CarType,
+            CheckoutDate = request.CheckoutDate,
+            Odometer = request.Odometer,
+        };
 
         carRentalsRepository.SaveCarRental(carRental);
     }
@@ -59,6 +57,11 @@ public class CarRentalService(
         var daysRented = (int)(request.ReturnDate - rental.CheckoutDate).TotalDays;
 
         var totalCost = priceService.CalculatePrice(rental.CarType, daysRented, distanceDriven);
+
+        rental.ReturnOdometer = request.Odometer;
+        rental.ReturnDate = request.ReturnDate;
+
+        carRentalsRepository.SaveCarRental(rental);
 
         return new CarReturnResponse(
             request.BookingNumber,

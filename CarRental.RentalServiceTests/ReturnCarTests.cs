@@ -19,16 +19,15 @@ public class ReturnCarTests
     {
         // Arrange
         const string bookingNumber = "123";
-        var rental = new Rental(
-            bookingNumber,
-            "ABC123",
-            "456",
-            CarTypeEnum.Compact,
-            DateTime.UtcNow,
-            initialOdometer,
-            null,
-            null
-        );
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = DateTime.UtcNow.AddDays(-1),
+            Odometer = initialOdometer
+        };
 
         var repository = new Mock<ICarRentalsRepository>();
         repository
@@ -68,16 +67,15 @@ public class ReturnCarTests
         var checkoutDate = DateTime.Parse("2024-06-20");
         var returnDate = checkoutDate.AddDays(rentalDays);
 
-        var rental = new Rental(
-            bookingNumber,
-            "ABC123",
-            "456",
-            CarTypeEnum.Compact,
-            checkoutDate,
-            0,
-            null,
-            null
-        );
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = checkoutDate,
+            Odometer = 0
+        };
 
         var repository = new Mock<ICarRentalsRepository>();
         repository
@@ -112,16 +110,15 @@ public class ReturnCarTests
         var checkoutDate = DateTime.Parse("2024-06-20");
         var returnDate = DateTime.Parse("2024-06-01");
 
-        var rental = new Rental(
-            bookingNumber,
-            "ABC123",
-            "456",
-            CarTypeEnum.Compact,
-            checkoutDate,
-            0,
-            null,
-            null
-        );
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = checkoutDate,
+            Odometer = 0
+        };
 
         var repository = new Mock<ICarRentalsRepository>();
         repository
@@ -153,16 +150,15 @@ public class ReturnCarTests
         var checkoutOdometer = 1000;
         var returnOdometer = 500;
 
-        var rental = new Rental(
-            bookingNumber,
-            "ABC123",
-            "456",
-            CarTypeEnum.Compact,
-            DateTime.UtcNow.AddDays(-2),
-            checkoutOdometer,
-            null,
-            null
-        );
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = DateTime.UtcNow.AddDays(-2),
+            Odometer = checkoutOdometer
+        };
 
         var repository = new Mock<ICarRentalsRepository>();
         repository
@@ -195,16 +191,15 @@ public class ReturnCarTests
         const int initialOdometer = 1000;
         const int distanceDriven = 100;
 
-        var rental = new Rental(
-            bookingNumber,
-            "ABC123",
-            "456",
-            CarTypeEnum.Compact,
-            DateTime.UtcNow.AddDays(-rentalDays),
-            initialOdometer,
-            null,
-            null
-        );
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = DateTime.UtcNow.AddDays(-rentalDays),
+            Odometer = initialOdometer
+        };
 
         var repository = new Mock<ICarRentalsRepository>();
         repository
@@ -251,5 +246,50 @@ public class ReturnCarTests
         ), Times.Once);
 
         Assert.NotEqual(0, response.TotalCost);
+    }
+
+    [Fact]
+    public void ReturnCar_Should_UpdateCarRentalData()
+    {
+        // Arrange
+        const string bookingNumber = "123";
+
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = DateTime.UtcNow.AddDays(-1),
+            Odometer = 0
+        };
+
+        var repository = new Mock<ICarRentalsRepository>();
+        repository
+            .Setup(x => x.GetCarRental(rental.BookingNumber))
+            .Returns(rental);
+        repository
+            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
+            .Returns([]);
+        repository
+            .Setup(x => x.SaveCarRental(rental))
+            .Verifiable();
+
+        var service = new CarRentalServiceBuilder()
+            .WithCarRentalsRepository(repository.Object)
+            .Build();
+
+        var request = new CarReturnRequest(
+            bookingNumber,
+            DateTime.UtcNow,
+            10
+        );
+
+        // Act
+        service.ReturnCar(request);
+
+        // Assert
+
+        repository.Verify(x => x.SaveCarRental(rental), Times.Once);
     }
 }
