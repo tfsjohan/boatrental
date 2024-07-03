@@ -59,10 +59,6 @@ public class ReturnCarTests
     [Fact]
     public void ReturnCar_Should_CalculateNumberOfFullRentalDays()
     {
-        /* Note to reviewer
-         * I've on purpuse only tested one date here, because the calculation if from the
-         * system classes I trust to be correct.
-         */
         // Arrange
         const string bookingNumber = "123";
         const uint rentalDays = 3;
@@ -102,6 +98,49 @@ public class ReturnCarTests
 
         // Assert
         Assert.Equal(rentalDays, response.FullDaysRented);
+    }
+
+    [Fact]
+    public void ReturnCar_Should_CheckoutAndReturnSameDayShouldCountAsOneFullDay()
+    {
+        // Arrange
+        const string bookingNumber = "123";
+        var checkoutDate = DateTime.Parse("2024-06-20T12:00:00");
+        var returnDate = DateTime.Parse("2024-06-20T14:00:00");
+
+        var rental = new Rental
+        {
+            BookingNumber = bookingNumber,
+            CarRegistrationPlate = "ABC123",
+            CustomerId = "456",
+            CarType = CarTypeEnum.Compact,
+            CheckoutDate = checkoutDate,
+            Odometer = 0
+        };
+
+        var repository = new Mock<ICarRentalsRepository>();
+        repository
+            .Setup(x => x.GetCarRental(rental.BookingNumber))
+            .Returns(rental);
+        repository
+            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
+            .Returns([]);
+
+        var service = new CarRentalServiceBuilder()
+            .WithCarRentalsRepository(repository.Object)
+            .Build();
+
+        var request = new CarReturnRequest(
+            "123",
+            returnDate,
+            0
+        );
+
+        // Act
+        var response = service.ReturnCar(request);
+
+        // Assert
+        Assert.Equal((uint)1, response.FullDaysRented);
     }
 
     [Fact]
@@ -189,7 +228,6 @@ public class ReturnCarTests
     {
         // Arrange
         const string bookingNumber = "123";
-        const uint rentalDays = 3;
         const uint initialOdometer = 1000;
         const uint distanceDriven = 100;
 
@@ -199,7 +237,7 @@ public class ReturnCarTests
             CarRegistrationPlate = "ABC123",
             CustomerId = "456",
             CarType = CarTypeEnum.Compact,
-            CheckoutDate = DateTime.UtcNow.AddDays(-rentalDays),
+            CheckoutDate = DateTime.Parse("2024-06-20"),
             Odometer = initialOdometer
         };
 
@@ -214,7 +252,7 @@ public class ReturnCarTests
         var priceService = new Mock<IPriceService>();
         priceService.Setup(x => x.CalculatePrice(
                 rental.CarType,
-                rentalDays,
+                3,
                 distanceDriven
             ))
             .Returns(100)
@@ -227,7 +265,7 @@ public class ReturnCarTests
 
         var request = new CarReturnRequest(
             "123",
-            DateTime.UtcNow,
+            DateTime.Parse("2024-06-23"),
             initialOdometer + distanceDriven
         );
 
@@ -243,7 +281,7 @@ public class ReturnCarTests
          */
         priceService.Verify(x => x.CalculatePrice(
             rental.CarType,
-            rentalDays,
+            3,
             distanceDriven
         ), Times.Once);
 
@@ -293,5 +331,34 @@ public class ReturnCarTests
         // Assert
 
         repository.Verify(x => x.SaveCarRental(rental), Times.Once);
+    }
+
+    [Fact]
+    public void CalculateRentalDate_Should_ThrowIfReturnDateIsBeforeCheckoutDate()
+    {
+        // Arrange
+        var service = new CarRentalServiceBuilder().Build();
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>(() => service.CalculateRentalDate(
+            DateTime.UtcNow.AddDays(1),
+            DateTime.UtcNow
+        ));
+    }
+
+    [Fact]
+    public void CalculateRentalDate_Should_ReturnOneIfDatesAreSameDay()
+    {
+        // Arrange
+        var service = new CarRentalServiceBuilder().Build();
+
+        // Act
+        var days = service.CalculateRentalDate(
+            DateTime.Parse("2024-06-20T08:00:00"),
+            DateTime.Parse("2024-06-20T12:00:00")
+        );
+
+        // Assert
+        Assert.Equal((uint)1, days);
     }
 }

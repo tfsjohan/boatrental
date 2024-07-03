@@ -55,7 +55,7 @@ public class CarRentalService(
         }
 
         var distanceDriven = request.Odometer - rental.Odometer;
-        var daysRented = (uint)(request.ReturnDate - rental.CheckoutDate).TotalDays;
+        var daysRented = CalculateRentalDate(rental.CheckoutDate, request.ReturnDate);
 
         var totalCost = priceService.CalculatePrice(
             rental.CarType,
@@ -83,5 +83,21 @@ public class CarRentalService(
     public virtual bool IsCarAvailable(string carRegistrationPlate)
     {
         return !carRentalsRepository.GetBookingsForCarAtDate(carRegistrationPlate, DateTime.UtcNow).Any();
+    }
+
+    /// <summary>
+    /// Calculate the number of days a car has been rented for, each day is counted as a full day.
+    /// </summary>
+    /// <param name="checkoutDate">Date for checkout</param>
+    /// <param name="returnDate">Date for return</param>
+    /// <returns>Positive integer of number of full days</returns>
+    public virtual uint CalculateRentalDate(DateTime checkoutDate, DateTime returnDate)
+    {
+        if (checkoutDate > returnDate)
+        {
+            throw new InvalidOperationException("Return date cannot be before checkout date");
+        }
+
+        return (uint)Math.Ceiling((returnDate - checkoutDate).TotalDays);
     }
 }
