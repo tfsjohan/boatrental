@@ -6,9 +6,9 @@ public record CarReturnResponse(
     string CustomerId,
     DateTime CheckoutDate,
     DateTime ReturnDate,
-    int FullDaysRented,
-    int OdometerAtCheckout,
-    int OdometerAtReturn,
-    int DistanceDriven,
+    uint FullDaysRented,
+    uint OdometerAtCheckout,
+    uint OdometerAtReturn,
+    uint DistanceDriven,
     decimal TotalCost
 );

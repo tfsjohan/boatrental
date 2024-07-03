@@ -55,7 +55,7 @@ public class CarRentalService(
         }
 
         var distanceDriven = request.Odometer - rental.Odometer;
-        var daysRented = (int)(request.ReturnDate - rental.CheckoutDate).TotalDays;
+        var daysRented = (uint)(request.ReturnDate - rental.CheckoutDate).TotalDays;
 
         var totalCost = priceService.CalculatePrice(
             rental.CarType,

@@ -1,5 +1,6 @@
 using CarRental.Data;
 using CarRental.PriceService;
+using CarRental.RentalApi;
 using CarRental.RentalService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,13 +27,25 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/checkoutcar", ([FromBody] CarCheckoutRequest request, ICarRentalService rentalService) =>
+app.MapGet("/checkoutcar", ([FromBody] RentalApiModels.CheckoutRequest request, ICarRentalService rentalService) =>
     {
         try
         {
-            rentalService.CheckoutCar(request);
+            rentalService.CheckoutCar(new CarCheckoutRequest(
+                BookingNumber: request.BookingNumber,
+                CarRegistrationPlate: request.CarRegistrationPlate,
+                CustomerId: request.CustomerId,
+                CarType: request.CarType,
+                CheckoutDate: DateTime.UtcNow,
+                Odometer: request.Odometer
+            ));
 
-            return Results.Ok($"Car {request.CarRegistrationPlate} checked out for customer {request.CustomerId}");
+            return Results.Ok(new RentalApiModels.CheckoutResponse()
+            {
+                BookingNumber = request.BookingNumber,
+                CarRegistrationPlate = request.CarRegistrationPlate,
+                CustomerId = request.CustomerId
+            });
         }
         catch (InvalidOperationException ex)
         {
@@ -42,14 +55,25 @@ app.MapGet("/checkoutcar", ([FromBody] CarCheckoutRequest request, ICarRentalSer
     .WithName("CheckoutCar")
     .WithOpenApi();
 
-app.MapGet("/returncar", ([FromBody] CarReturnRequest request, ICarRentalService rentalService) =>
+app.MapGet("/returncar", ([FromBody] RentalApiModels.ReturnRequest request, ICarRentalService rentalService) =>
     {
         try
         {
-            var response = rentalService.ReturnCar(request);
+            var response = rentalService.ReturnCar(new CarReturnRequest(
+                BookingNumber: request.BookingNumber,
+                ReturnDate: DateTime.UtcNow,
+                Odometer: request.Odometer
+            ));
 
             return Results.Ok(
-                $"Car {response.CarRegistrationPlate} returned. Total price for rental is {response.TotalCost:C}");
+                new RentalApiModels.ReturnResponse()
+                {
+                    BookingNumber = response.BookingNumber,
+                    CarRegistrationPlate = response.CarRegistrationPlate,
+                    DistanceDriven = response.DistanceDriven,
+                    TotalCost = response.TotalCost
+                }
+            );
         }
         catch (InvalidOperationException ex)
         {

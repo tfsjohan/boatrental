@@ -49,12 +49,23 @@ public class CheckoutCarTests
         const string registrationPlate = "ABC123";
 
         var repository = new Mock<ICarRentalsRepository>();
+        repository
+            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
+            .Returns([
+                new Rental()
+                {
+                    BookingNumber = "123",
+                    CarRegistrationPlate = registrationPlate,
+                    CheckoutDate = DateTime.Now.AddHours(-1),
+                    CarType = CarTypeEnum.Compact,
+                    CustomerId = "456",
+                    Odometer = 100
+                }
+            ]);
 
-        var service = new Mock<CarRentalService>(repository.Object)
-        {
-            CallBase = true
-        };
-        service.Setup(x => x.IsCarAvailable(registrationPlate)).Returns(false);
+        var service = new CarRentalServiceBuilder()
+            .WithCarRentalsRepository(repository.Object)
+            .Build();
 
         var request = new CarCheckoutRequest(
             "123",
@@ -66,7 +77,7 @@ public class CheckoutCarTests
         );
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => service.Object.CheckoutCar(request));
+        Assert.Throws<InvalidOperationException>(() => service.CheckoutCar(request));
     }
 
     [Fact]

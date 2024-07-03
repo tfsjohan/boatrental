@@ -5,28 +5,10 @@ namespace CarRental.PriceService;
 
 public class PriceService(ICarTypePriceRepository carTypePriceRepository) : IPriceService
 {
-    public decimal CalculatePrice(CarTypeEnum carType, int days, int kilometers)
+    public decimal CalculatePrice(CarTypeEnum carType, uint days, uint kilometers)
     {
-        /* Note to reviewer:
-         * In a real world application, I would probably use a validation library
-         * and also use resource files for the error messages.
-         */
-        if (days < 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(days),
-                "Days must be greater than or equal to 0.");
-        }
-        
-        if (kilometers < 0)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(kilometers),
-                "Kilometers must be greater than or equal to 0.");
-        }
-
         var details = carTypePriceRepository.GetPriceDetails(carType);
-        
+
         /* Note to reviewer:
          * in the specification it's stated that there are three types of cars, so
          * a factory is used to create the correct price calculator based on the car type

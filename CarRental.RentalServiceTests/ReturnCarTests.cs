@@ -14,8 +14,10 @@ public class ReturnCarTests
         InlineData(1000, 3000, 2000),
         InlineData(1000, 1000, 0)
     ]
-    public void ReturnCar_Should_CalculateDistanceDriven(int initialOdometer, int returnOdometer,
-        int expectedDistanceDriven)
+    public void ReturnCar_Should_CalculateDistanceDriven(
+        uint initialOdometer,
+        uint returnOdometer,
+        uint expectedDistanceDriven)
     {
         // Arrange
         const string bookingNumber = "123";
@@ -63,7 +65,7 @@ public class ReturnCarTests
          */
         // Arrange
         const string bookingNumber = "123";
-        const int rentalDays = 3;
+        const uint rentalDays = 3;
         var checkoutDate = DateTime.Parse("2024-06-20");
         var returnDate = checkoutDate.AddDays(rentalDays);
 
@@ -147,8 +149,8 @@ public class ReturnCarTests
     {
         // Arrange
         const string bookingNumber = "123";
-        var checkoutOdometer = 1000;
-        var returnOdometer = 500;
+        uint checkoutOdometer = 1000;
+        uint returnOdometer = 500;
 
         var rental = new Rental
         {
@@ -187,9 +189,9 @@ public class ReturnCarTests
     {
         // Arrange
         const string bookingNumber = "123";
-        const int rentalDays = 3;
-        const int initialOdometer = 1000;
-        const int distanceDriven = 100;
+        const uint rentalDays = 3;
+        const uint initialOdometer = 1000;
+        const uint distanceDriven = 100;
 
         var rental = new Rental
         {

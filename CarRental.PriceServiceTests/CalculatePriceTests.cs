@@ -1,5 +1,6 @@
 using CarRental.CommonTypes;
 using CarRental.Data;
+using CarRental.PriceService;
 using Moq;
 
 namespace CarRental.PriceServiceTests;
@@ -40,8 +41,8 @@ public class CalculatePriceTests
         CarTypeEnum carType,
         int pricePerDay,
         int pricePerKilometer,
-        int days,
-        int kilometers,
+        uint days,
+        uint kilometers,
         decimal expectedPrice
     )
     {
@@ -65,46 +66,26 @@ public class CalculatePriceTests
     }
 
     [Fact]
-    public void CalculatePrice_Should_ThrowError_When_NumberOfDaysIsNegative()
+    public void PriceCalculatorFactory_Should_ThrowOnInvalidCarType()
     {
-        // Arrange
-        var carTypePriceDetails = new CarTypePriceDetails(
-            CarTypeEnum.Compact,
-            1,
-            1
+        Assert.Throws<ArgumentException>(
+            () => PriceCalculatorFactory.CreatePriceCalculator((CarTypeEnum)100)
         );
-
-        var priceRepository = new Mock<ICarTypePriceRepository>();
-        priceRepository
-            .Setup(x => x.GetPriceDetails(carTypePriceDetails.CarType))
-            .Returns(carTypePriceDetails);
-
-        var priceService = new PriceService.PriceService(priceRepository.Object);
-        
-        // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => 
-            priceService.CalculatePrice(carTypePriceDetails.CarType, -1, 1));
     }
-    
+
     [Fact]
-    public void CalculatePrice_Should_ThrowError_When_NumberOfKilometersIsNegative()
+    public void PriceCalculatorFactory_Should_ReturnCorrectCalculatorForCarType()
     {
-        // Arrange
-        var carTypePriceDetails = new CarTypePriceDetails(
-            CarTypeEnum.Compact,
-            1,
-            1
+        Assert.IsAssignableFrom<CompactCarPriceCalculator>(
+            PriceCalculatorFactory.CreatePriceCalculator(CarTypeEnum.Compact)
         );
 
-        var priceRepository = new Mock<ICarTypePriceRepository>();
-        priceRepository
-            .Setup(x => x.GetPriceDetails(carTypePriceDetails.CarType))
-            .Returns(carTypePriceDetails);
+        Assert.IsAssignableFrom<StationWagonPriceCalculator>(
+            PriceCalculatorFactory.CreatePriceCalculator(CarTypeEnum.StationWagon)
+        );
 
-        var priceService = new PriceService.PriceService(priceRepository.Object);
-        
-        // Act & Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => 
-            priceService.CalculatePrice(carTypePriceDetails.CarType, 10, -1));
+        Assert.IsAssignableFrom<TruckPriceCalculator>(
+            PriceCalculatorFactory.CreatePriceCalculator(CarTypeEnum.Truck)
+        );
     }
 }

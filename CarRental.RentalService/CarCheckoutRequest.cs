@@ -8,5 +8,5 @@ public record CarCheckoutRequest(
     string CustomerId,
     CarTypeEnum CarType,
     DateTime CheckoutDate,
-    int Odometer
+    uint Odometer
 );

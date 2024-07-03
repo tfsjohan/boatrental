@@ -4,5 +4,5 @@ namespace CarRental.PriceService;
 
 public interface IPriceCalculator
 {
-    decimal CalculatePrice(CarTypePriceDetails details, int days, int kilometers);
+    decimal CalculatePrice(CarTypePriceDetails details, uint days, uint kilometers);
 }

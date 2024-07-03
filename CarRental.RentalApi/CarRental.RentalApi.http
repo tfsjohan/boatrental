@@ -1,5 +1,12 @@
 @CarRental.RentalApi_HostAddress = http://localhost:5182
 
+# CarTypes
+# 0 - Compact Car
+# 1 - Station Wagon
+# 2 - Truck
+
+# Compact Car
+
 GET {{CarRental.RentalApi_HostAddress}}/checkoutcar/
 Content-Type: application/json
 
@@ -8,7 +15,6 @@ Content-Type: application/json
   "carRegistrationPlate": "ABC123",
   "customerId": "123456",
   "carType": 0,
-  "checkoutDate": "2024-06-20T09:00:00",
   "odometer": 1000
 }
 
@@ -19,7 +25,56 @@ Content-Type: application/json
 
 {
   "bookingNumber": "123456",
-  "returnDate": "2024-06-24T17:00:00",
+  "odometer": 1200
+}
+
+###
+
+# Station wagon Car
+
+GET {{CarRental.RentalApi_HostAddress}}/checkoutcar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123457",
+  "carRegistrationPlate": "ABC123",
+  "customerId": "123456",
+  "carType": 1,
+  "odometer": 1000
+}
+
+###
+
+GET {{CarRental.RentalApi_HostAddress}}/returncar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123457",
+  "odometer": 1200
+}
+
+###
+
+# Truck
+
+GET {{CarRental.RentalApi_HostAddress}}/checkoutcar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123458",
+  "carRegistrationPlate": "ABC123",
+  "customerId": "123456",
+  "carType": 0,
+  "odometer": 1000
+}
+
+###
+
+GET {{CarRental.RentalApi_HostAddress}}/returncar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123458",
   "odometer": 1200
 }
 
