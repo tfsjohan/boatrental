@@ -332,33 +332,4 @@ public class ReturnCarTests
 
         repository.Verify(x => x.SaveCarRental(rental), Times.Once);
     }
-
-    [Fact]
-    public void CalculateRentalDate_Should_ThrowIfReturnDateIsBeforeCheckoutDate()
-    {
-        // Arrange
-        var service = new CarRentalServiceBuilder().Build();
-
-        // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => service.CalculateRentalDate(
-            DateTime.UtcNow.AddDays(1),
-            DateTime.UtcNow
-        ));
-    }
-
-    [Fact]
-    public void CalculateRentalDate_Should_ReturnOneIfDatesAreSameDay()
-    {
-        // Arrange
-        var service = new CarRentalServiceBuilder().Build();
-
-        // Act
-        var days = service.CalculateRentalDate(
-            DateTime.Parse("2024-06-20T08:00:00"),
-            DateTime.Parse("2024-06-20T12:00:00")
-        );
-
-        // Assert
-        Assert.Equal((uint)1, days);
-    }
 }

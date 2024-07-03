@@ -55,7 +55,7 @@ public class CarRentalService(
         }
 
         var distanceDriven = request.Odometer - rental.Odometer;
-        var daysRented = CalculateRentalDate(rental.CheckoutDate, request.ReturnDate);
+        var daysRented = CalculateRentalDays(rental.CheckoutDate, request.ReturnDate);
 
         var totalCost = priceService.CalculatePrice(
             rental.CarType,
@@ -91,7 +91,7 @@ public class CarRentalService(
     /// <param name="checkoutDate">Date for checkout</param>
     /// <param name="returnDate">Date for return</param>
     /// <returns>Positive integer of number of full days</returns>
-    public virtual uint CalculateRentalDate(DateTime checkoutDate, DateTime returnDate)
+    public virtual uint CalculateRentalDays(DateTime checkoutDate, DateTime returnDate)
     {
         if (checkoutDate > returnDate)
         {

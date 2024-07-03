@@ -8,5 +8,5 @@ public interface ICarRentalService
 
     bool IsCarAvailable(string carRegistrationPlate);
 
-    uint CalculateRentalDate(DateTime checkoutDate, DateTime returnDate);
+    uint CalculateRentalDays(DateTime checkoutDate, DateTime returnDate);
 }
