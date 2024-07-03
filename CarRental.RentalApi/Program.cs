@@ -27,7 +27,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/checkoutcar", ([FromBody] RentalApiModels.CheckoutRequest request, ICarRentalService rentalService) =>
+app.MapGet("/checkoutcar", (
+        [FromBody] RentalApiModels.CheckoutRequest request,
+        ICarRentalService rentalService
+    ) =>
     {
         try
         {
@@ -53,9 +56,13 @@ app.MapGet("/checkoutcar", ([FromBody] RentalApiModels.CheckoutRequest request, 
         }
     })
     .WithName("CheckoutCar")
+    .WithDescription("Checkout a car for rental. CarType can be 0 = Compact, 1 = Station Wagon, 2 = Truck.")
     .WithOpenApi();
 
-app.MapGet("/returncar", ([FromBody] RentalApiModels.ReturnRequest request, ICarRentalService rentalService) =>
+app.MapGet("/returncar", (
+        [FromBody] RentalApiModels.ReturnRequest request,
+        ICarRentalService rentalService
+    ) =>
     {
         try
         {
@@ -81,6 +88,7 @@ app.MapGet("/returncar", ([FromBody] RentalApiModels.ReturnRequest request, ICar
         }
     })
     .WithName("ReturnCar")
+    .WithDescription("Return a rental car. CarType can be 0 = Compact, 1 = Station Wagon, 2 = Truck.")
     .WithOpenApi();
 
 app.Run();
