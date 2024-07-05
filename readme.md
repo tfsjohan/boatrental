@@ -13,11 +13,6 @@ implementation. This way, it is easy to change the data storage method in the fu
 In a real world application, I would spend more time on proper data validation. To avoid unnecessary complexity
 in this task, I have only added some basic validation.
 
-### Error handling
-
-If this was a real project I would create more subclasses for exceptions instead of using magic strings. Doing
-so would make it easier to test and refactor when needed.
-
 ### Logging
 
 No logging is used at all in the demo project.
@@ -31,7 +26,3 @@ have tests because they are not part of the core assignment, but still needed to
 
 The web api is very basic and only has the functionality required for the specification. It is not meant to be
 used in a production environment.
-
-## More specific info
-
-I've added notes to the reviewer inline in the code where I thought it was necessary. 
