@@ -19,18 +19,13 @@ public class CarRentalService(
 
         if (!IsCarAvailable(request.CarRegistrationPlate))
         {
-            /* Note to reviewer:
-             * In a real-world scenario, we would throw a more specific exception here,
-             * created specifically for this case. However, for the sake of simplicity,
-             * we are using a generic exception here.
-             */
-            throw new InvalidOperationException("Car is not available for checkout");
+            throw new CarUnavailableException();
         }
 
         var existingRental = GetRental(request.BookingNumber);
         if (existingRental is not null)
         {
-            throw new InvalidOperationException("Booking number already used");
+            throw new BookingNumberAlreadyUsedException();
         }
 
         var carRental = new Rental
@@ -52,17 +47,18 @@ public class CarRentalService(
 
         if (IsReturned(rental))
         {
-            throw new InvalidOperationException("Car is already returned");
+            throw new CarAlreadyReturnedException();
         }
 
         if (request.ReturnDate < rental.CheckoutDate)
         {
-            throw new InvalidOperationException("Return date cannot be before checkout date");
+            throw new ArgumentException("Return date cannot be before checkout date", nameof(request.ReturnDate));
         }
 
         if (request.Odometer < rental.Odometer)
         {
-            throw new InvalidOperationException("Return odometer cannot be less than checkout odometer");
+            throw new ArgumentException("Return odometer cannot be less than checkout odometer",
+                nameof(request.Odometer));
         }
 
         var distanceDriven = request.Odometer - rental.Odometer;
@@ -106,7 +102,7 @@ public class CarRentalService(
     {
         if (checkoutDate > returnDate)
         {
-            throw new InvalidOperationException("Return date cannot be before checkout date");
+            throw new ArgumentException("Return date cannot be before checkout date", nameof(returnDate));
         }
 
         return (uint)Math.Ceiling((returnDate - checkoutDate).TotalDays);

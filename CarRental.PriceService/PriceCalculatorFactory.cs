@@ -11,7 +11,7 @@ public static class PriceCalculatorFactory
             CarTypeEnum.Compact => new CompactCarPriceCalculator(),
             CarTypeEnum.StationWagon => new StationWagonPriceCalculator(),
             CarTypeEnum.Truck => new TruckPriceCalculator(),
-            _ => throw new ArgumentException("Unknown car type")
+            _ => throw new ArgumentException("Unknown car type", nameof(carType))
         };
     }
 }

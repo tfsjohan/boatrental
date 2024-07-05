@@ -180,7 +180,7 @@ public class ReturnCarTests
         );
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => service.ReturnCar(request));
+        Assert.Throws<ArgumentException>(() => service.ReturnCar(request));
     }
 
     [Fact]
@@ -220,7 +220,7 @@ public class ReturnCarTests
         );
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => service.ReturnCar(request));
+        Assert.Throws<ArgumentException>(() => service.ReturnCar(request));
     }
 
     [Fact]
@@ -273,12 +273,6 @@ public class ReturnCarTests
         var response = service.ReturnCar(request);
 
         // Assert
-
-        /* Note to reviewer
-         * I'm not testing the actual calculation of the total cost here, because that is
-         * done in the PriceService. I'm only testing that the PriceService is called with
-         * the correct parameters.
-         */
         priceService.Verify(x => x.CalculatePrice(
             rental.CarType,
             3,
@@ -326,7 +320,8 @@ public class ReturnCarTests
         service.ReturnCar(request);
 
         // Assert
-
+        Assert.Equal(request.Odometer, rental.ReturnOdometer);
+        Assert.Equal(request.ReturnDate, rental.ReturnDate);
         repository.Verify(x => x.SaveCarRental(rental), Times.Once);
     }
 
@@ -365,7 +360,6 @@ public class ReturnCarTests
 
         // Act & Assert
 
-        var exception = Assert.Throws<InvalidOperationException>(() => service.ReturnCar(request));
-        Assert.Contains("Car is already returned", exception.Message);
+        Assert.Throws<CarAlreadyReturnedException>(() => service.ReturnCar(request));
     }
 }

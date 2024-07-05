@@ -1,3 +1,4 @@
+using System.Reflection;
 using CarRental.CommonTypes;
 using CarRental.Data;
 using CarRental.PriceService;
@@ -50,7 +51,8 @@ public class CheckoutCarTests
 
         var repository = new Mock<ICarRentalsRepository>();
         repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
+            .Setup(x =>
+                x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
             .Returns([
                 new Rental()
                 {
@@ -77,7 +79,7 @@ public class CheckoutCarTests
         );
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => service.CheckoutCar(request));
+        Assert.Throws<CarUnavailableException>(() => service.CheckoutCar(request));
     }
 
     [Fact]
@@ -114,8 +116,7 @@ public class CheckoutCarTests
         );
 
         // Act & Assert
-        var exception = Assert.Throws<InvalidOperationException>(() => service.CheckoutCar(request));
-        Assert.Contains("Booking number already used", exception.Message);
+        Assert.Throws<BookingNumberAlreadyUsedException>(() => service.CheckoutCar(request));
     }
 
     [Fact]
@@ -147,5 +148,24 @@ public class CheckoutCarTests
 
         // Assert
         repository.Verify(x => x.SaveCarRental(It.IsAny<Rental>()), Times.Once);
+    }
+
+    [Fact]
+    public void GetRental_ReturnsNull_WhenKeyNotFoundExceptionIsThrown()
+    {
+        // Arrange
+        var mockRepository = new Mock<ICarRentalsRepository>();
+        mockRepository.Setup(r => r.GetCarRental(It.IsAny<string>())).Throws<KeyNotFoundException>();
+
+        var service = new CarRentalService(mockRepository.Object, null!);
+        var method = typeof(CarRentalService).GetMethod(
+            "GetRental",
+            BindingFlags.NonPublic | BindingFlags.Instance);
+
+        // Act
+        var result = method!.Invoke(service, ["nonExistingBookingNumber"]);
+
+        // Assert
+        Assert.Null(result);
     }
 }

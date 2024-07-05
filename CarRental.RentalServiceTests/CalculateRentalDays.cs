@@ -9,7 +9,7 @@ public class CalculateRentalDays
         var service = new CarRentalServiceBuilder().Build();
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => service.CalculateRentalDays(
+        Assert.Throws<ArgumentException>(() => service.CalculateRentalDays(
             DateTime.UtcNow.AddDays(1),
             DateTime.UtcNow
         ));
