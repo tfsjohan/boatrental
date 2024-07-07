@@ -6,7 +6,5 @@ public interface ICarRentalService
 
     CarReturnResponse ReturnCar(CarReturnRequest request);
 
-    bool IsCarAvailable(string carRegistrationPlate);
-
     uint CalculateRentalDays(DateTime checkoutDate, DateTime returnDate);
 }

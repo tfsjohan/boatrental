@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ICarRentalsRepository, CarRentalRepository>();
+builder.Services.AddSingleton<ICarRentalsRepository, CarRentalsRepository>();
 builder.Services.AddSingleton<ICarTypePriceRepository, CarTypePriceRepository>();
 builder.Services.AddTransient<IPriceService, PriceService>();
 builder.Services.AddTransient<ICarRentalService, CarRentalService>();
@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGet("/checkoutcar", (
+app.MapPost("/checkoutcar", (
         [FromBody] RentalApiModels.CheckoutRequest request,
         ICarRentalService rentalService
     ) =>
@@ -59,7 +59,7 @@ app.MapGet("/checkoutcar", (
     .WithDescription("Checkout a car for rental. CarType can be 0 = Compact, 1 = Station Wagon, 2 = Truck.")
     .WithOpenApi();
 
-app.MapGet("/returncar", (
+app.MapPost("/returncar", (
         [FromBody] RentalApiModels.ReturnRequest request,
         ICarRentalService rentalService
     ) =>

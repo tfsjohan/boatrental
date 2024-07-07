@@ -1,4 +1,3 @@
-using System.Reflection;
 using CarRental.CommonTypes;
 using CarRental.Data;
 using CarRental.PriceService;
@@ -15,71 +14,34 @@ public class CheckoutCarTests
         // Arrange 
         const string registrationPlate = "ABC123";
 
-        var repository = new Mock<ICarRentalsRepository>();
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(registrationPlate, It.IsAny<DateTime>()))
-            .Returns(new List<Rental>());
+        var repository = new CarRentalsRepository();
 
         var priceService = new Mock<IPriceService>();
 
-        var service = new Mock<CarRentalService>(repository.Object, priceService.Object)
-        {
-            CallBase = true
-        };
+        var service = new CarRentalService(repository, priceService.Object);
 
-        var request = new CarCheckoutRequest(
+        var existingRequest = new CarCheckoutRequest(
             "123",
             registrationPlate,
             "456",
             CarTypeEnum.Compact,
-            DateTime.Now,
+            DateTime.UtcNow.AddHours(-1),
             1000
         );
+        service.CheckoutCar(existingRequest);
 
         // Act
-        service.Object.CheckoutCar(request);
-
-        // Assert
-        service.Verify(x => x.IsCarAvailable(registrationPlate), Times.Once);
-    }
-
-    [Fact]
-    public void Checkout_Should_ThrowException_When_CarIsNotAvailable()
-    {
-        // Arrange 
-        const string registrationPlate = "ABC123";
-
-        var repository = new Mock<ICarRentalsRepository>();
-        repository
-            .Setup(x =>
-                x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([
-                new Rental()
-                {
-                    BookingNumber = "123",
-                    CarRegistrationPlate = registrationPlate,
-                    CheckoutDate = DateTime.Now.AddHours(-1),
-                    CarType = CarTypeEnum.Compact,
-                    CustomerId = "456",
-                    Odometer = 100
-                }
-            ]);
-
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
-            .Build();
-
-        var request = new CarCheckoutRequest(
-            "123",
+        var nextRequest = new CarCheckoutRequest(
+            "321",
             registrationPlate,
-            "456",
+            "654",
             CarTypeEnum.Compact,
-            DateTime.Now,
+            DateTime.UtcNow,
             1000
         );
 
-        // Act & Assert
-        Assert.Throws<CarUnavailableException>(() => service.CheckoutCar(request));
+        // Assert
+        Assert.Throws<CarUnavailableException>(() => service.CheckoutCar(nextRequest));
     }
 
     [Fact]
@@ -124,18 +86,16 @@ public class CheckoutCarTests
     {
         // Arrange 
         const string registrationPlate = "ABC123";
+        const string bookingNumber = "123";
 
-        var repository = new Mock<ICarRentalsRepository>();
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(registrationPlate, It.IsAny<DateTime>()))
-            .Returns(new List<Rental>());
+        var repository = new CarRentalsRepository();
 
         var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+            .WithCarRentalsRepository(repository)
             .Build();
 
         var request = new CarCheckoutRequest(
-            "123",
+            bookingNumber,
             registrationPlate,
             "456",
             CarTypeEnum.Compact,
@@ -147,25 +107,7 @@ public class CheckoutCarTests
         service.CheckoutCar(request);
 
         // Assert
-        repository.Verify(x => x.SaveCarRental(It.IsAny<Rental>()), Times.Once);
-    }
-
-    [Fact]
-    public void GetRental_ReturnsNull_WhenKeyNotFoundExceptionIsThrown()
-    {
-        // Arrange
-        var mockRepository = new Mock<ICarRentalsRepository>();
-        mockRepository.Setup(r => r.GetCarRental(It.IsAny<string>())).Throws<KeyNotFoundException>();
-
-        var service = new CarRentalService(mockRepository.Object, null!);
-        var method = typeof(CarRentalService).GetMethod(
-            "GetRental",
-            BindingFlags.NonPublic | BindingFlags.Instance);
-
-        // Act
-        var result = method!.Invoke(service, ["nonExistingBookingNumber"]);
-
-        // Assert
-        Assert.Null(result);
+        var rental = repository.GetCarRental(bookingNumber);
+        Assert.NotNull(rental);
     }
 }

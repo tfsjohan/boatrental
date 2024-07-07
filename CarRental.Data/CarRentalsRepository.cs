@@ -1,6 +1,6 @@
 namespace CarRental.Data;
 
-public class CarRentalRepository : ICarRentalsRepository
+public class CarRentalsRepository : ICarRentalsRepository
 {
     private readonly Dictionary<string, Rental> _repository = new();
 

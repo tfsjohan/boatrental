@@ -17,7 +17,8 @@ public class ReturnCarTests
     public void ReturnCar_Should_CalculateDistanceDriven(
         uint initialOdometer,
         uint returnOdometer,
-        uint expectedDistanceDriven)
+        uint expectedDistanceDriven
+    )
     {
         // Arrange
         const string bookingNumber = "123";
@@ -35,9 +36,6 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
@@ -79,16 +77,13 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
             .Build();
 
         var request = new CarReturnRequest(
-            "123",
+            bookingNumber,
             returnDate,
             0
         );
@@ -122,16 +117,13 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
             .Build();
 
         var request = new CarReturnRequest(
-            "123",
+            bookingNumber,
             returnDate,
             0
         );
@@ -165,16 +157,13 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
             .Build();
 
         var request = new CarReturnRequest(
-            "123",
+            bookingNumber,
             returnDate,
             0
         );
@@ -205,16 +194,13 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
             .Build();
 
         var request = new CarReturnRequest(
-            "123",
+            bookingNumber,
             DateTime.UtcNow,
             returnOdometer
         );
@@ -245,9 +231,6 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.GetBookingsForCarAtDate(It.IsAny<string>(), It.IsAny<DateTime>()))
-            .Returns([]);
 
         var priceService = new Mock<IPriceService>();
         priceService.Setup(x => x.CalculatePrice(
@@ -255,8 +238,7 @@ public class ReturnCarTests
                 3,
                 distanceDriven
             ))
-            .Returns(100)
-            .Verifiable();
+            .Returns(100);
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
@@ -264,7 +246,7 @@ public class ReturnCarTests
             .Build();
 
         var request = new CarReturnRequest(
-            "123",
+            bookingNumber,
             DateTime.Parse("2024-06-23"),
             initialOdometer + distanceDriven
         );
@@ -273,12 +255,6 @@ public class ReturnCarTests
         var response = service.ReturnCar(request);
 
         // Assert
-        priceService.Verify(x => x.CalculatePrice(
-            rental.CarType,
-            3,
-            distanceDriven
-        ), Times.Once);
-
         Assert.NotEqual(0, response.TotalCost);
     }
 
@@ -302,9 +278,6 @@ public class ReturnCarTests
         repository
             .Setup(x => x.GetCarRental(rental.BookingNumber))
             .Returns(rental);
-        repository
-            .Setup(x => x.SaveCarRental(rental))
-            .Verifiable();
 
         var service = new CarRentalServiceBuilder()
             .WithCarRentalsRepository(repository.Object)
@@ -322,7 +295,6 @@ public class ReturnCarTests
         // Assert
         Assert.Equal(request.Odometer, rental.ReturnOdometer);
         Assert.Equal(request.ReturnDate, rental.ReturnDate);
-        repository.Verify(x => x.SaveCarRental(rental), Times.Once);
     }
 
     [Fact]

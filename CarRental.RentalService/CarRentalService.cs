@@ -87,11 +87,6 @@ public class CarRentalService(
             totalCost);
     }
 
-    public virtual bool IsCarAvailable(string carRegistrationPlate)
-    {
-        return !carRentalsRepository.GetBookingsForCarAtDate(carRegistrationPlate, DateTime.UtcNow).Any();
-    }
-
     /// <summary>
     /// Calculate the number of days a car has been rented for, each day is counted as a full day.
     /// </summary>
@@ -106,6 +101,13 @@ public class CarRentalService(
         }
 
         return (uint)Math.Ceiling((returnDate - checkoutDate).TotalDays);
+    }
+
+    private bool IsCarAvailable(string carRegistrationPlate)
+    {
+        return !carRentalsRepository
+            .GetBookingsForCarAtDate(carRegistrationPlate, DateTime.UtcNow)
+            .Any();
     }
 
     private bool IsReturned(Rental rental) => rental.ReturnDate is not null;
