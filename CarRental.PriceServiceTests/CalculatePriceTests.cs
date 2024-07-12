@@ -54,7 +54,9 @@ public class CalculatePriceTests
         );
 
         var priceRepository = new Mock<ICarTypePriceRepository>();
-        priceRepository.Setup(x => x.GetPriceDetails(carType)).Returns(carTypePriceDetails);
+        priceRepository
+            .Setup(x => x.GetPriceDetails(carType))
+            .Returns(carTypePriceDetails);
 
         var priceService = new PriceService.PriceService(priceRepository.Object);
 

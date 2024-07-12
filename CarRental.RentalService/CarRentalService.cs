@@ -96,7 +96,9 @@ public class CarRentalService(
     {
         if (checkoutDate > returnDate)
         {
-            throw new ArgumentException("Return date cannot be before checkout date", nameof(returnDate));
+            throw new ArgumentException(
+                "Return date cannot be before checkout date",
+                nameof(returnDate));
         }
 
         return (uint)Math.Ceiling((returnDate - checkoutDate).TotalDays);

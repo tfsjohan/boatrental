@@ -23,7 +23,7 @@ public class PriceService(ICarTypePriceRepository carTypePriceRepository) : IPri
          * I like the use of subclasses, because it makes it really flexible to have
          * very different types of calculations for different car types. Like,
          * a regular car is based on days and distance, but a convertable might have
-         * different pricing based on season and a weather forecast.
+         * different pricing based on season or a weather forecast.
          */
         var calculator = PriceCalculatorFactory.CreatePriceCalculator(details.CarType);
 
