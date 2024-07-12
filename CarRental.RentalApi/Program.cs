@@ -50,7 +50,7 @@ app.MapPost("/checkoutcar", (
                 CustomerId = request.CustomerId
             });
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
             return Results.BadRequest(ex.Message);
         }
@@ -82,7 +82,7 @@ app.MapPost("/returncar", (
                 }
             );
         }
-        catch (InvalidOperationException ex)
+        catch (Exception ex)
         {
             return Results.BadRequest(ex.Message);
         }

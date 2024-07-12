@@ -13,6 +13,9 @@ implementation. This way, it is easy to change the data storage method in the fu
 In a real world application, I would spend more time on proper data validation. To avoid unnecessary complexity
 in this task, I have only added some basic validation.
 
+I would also add a global exception handler, because now missing required properties will throw a JSON
+serialization error and not proper ModelState errors.
+
 ### Logging
 
 No logging is used at all in the demo project.

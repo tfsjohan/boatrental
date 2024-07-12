@@ -169,7 +169,7 @@ public class ReturnCarTests
         );
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => service.ReturnCar(request));
+        Assert.Throws<InvalidReturnDateException>(() => service.ReturnCar(request));
     }
 
     [Fact]
@@ -206,7 +206,7 @@ public class ReturnCarTests
         );
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => service.ReturnCar(request));
+        Assert.Throws<InvalidOdometerException>(() => service.ReturnCar(request));
     }
 
     [Fact]

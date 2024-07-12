@@ -52,13 +52,12 @@ public class CarRentalService(
 
         if (request.ReturnDate < rental.CheckoutDate)
         {
-            throw new ArgumentException("Return date cannot be before checkout date", nameof(request.ReturnDate));
+            throw new InvalidReturnDateException();
         }
 
         if (request.Odometer < rental.Odometer)
         {
-            throw new ArgumentException("Return odometer cannot be less than checkout odometer",
-                nameof(request.Odometer));
+            throw new InvalidOdometerException();
         }
 
         var distanceDriven = request.Odometer - rental.Odometer;
