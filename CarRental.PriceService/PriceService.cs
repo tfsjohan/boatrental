@@ -10,7 +10,7 @@ public class PriceService(ICarTypePriceRepository carTypePriceRepository) : IPri
         var details = carTypePriceRepository.GetPriceDetails(carType);
 
         /* Note to reviewer:
-         * in the specification it's stated that there are three types of cars, so
+         * In the specification it's stated that there are three types of cars, so
          * a factory is used to create the correct price calculator based on the car type
          * is likely sufficient for this case.
          *

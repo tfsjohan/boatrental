@@ -45,20 +45,7 @@ public class CarRentalService(
     {
         var rental = carRentalsRepository.GetCarRental(request.BookingNumber);
 
-        if (IsReturned(rental))
-        {
-            throw new CarAlreadyReturnedException();
-        }
-
-        if (request.ReturnDate < rental.CheckoutDate)
-        {
-            throw new InvalidReturnDateException();
-        }
-
-        if (request.Odometer < rental.Odometer)
-        {
-            throw new InvalidOdometerException();
-        }
+        EnsureValidRequest(request, rental);
 
         var distanceDriven = request.Odometer - rental.Odometer;
         var daysRented = CalculateRentalDays(rental.CheckoutDate, request.ReturnDate);
@@ -111,7 +98,7 @@ public class CarRentalService(
             .Any();
     }
 
-    private bool IsReturned(Rental rental) => rental.ReturnDate is not null;
+    private static bool IsReturned(Rental rental) => rental.ReturnDate is not null;
 
     private Rental? GetRental(string bookingNumber)
     {
@@ -122,6 +109,24 @@ public class CarRentalService(
         catch (KeyNotFoundException)
         {
             return null;
+        }
+    }
+
+    private static void EnsureValidRequest(CarReturnRequest request, Rental rental)
+    {
+        if (IsReturned(rental))
+        {
+            throw new CarAlreadyReturnedException();
+        }
+        
+        if (request.ReturnDate < rental.CheckoutDate)
+        {
+            throw new InvalidReturnDateException();
+        }
+
+        if (request.Odometer < rental.Odometer)
+        {
+            throw new InvalidOdometerException();
         }
     }
 }

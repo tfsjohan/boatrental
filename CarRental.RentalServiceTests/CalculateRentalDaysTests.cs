@@ -1,6 +1,6 @@
 namespace CarRental.RentalServiceTests;
 
-public class CalculateRentalDays
+public class CalculateRentalDaysTests
 {
     [Fact]
     public void CalculateRentalDate_Should_ThrowIfReturnDateIsBeforeCheckoutDate()
