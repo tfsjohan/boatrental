@@ -4,9 +4,9 @@ namespace BoatRental.RentalService;
 
 public record BoatCheckoutRequest(
     string BookingNumber,
-    string CarRegistrationPlate,
+    string BoatRegistrationNumber,
     string CustomerId,
     BoatTypeEnum BoatType,
     DateTime CheckoutDate,
-    uint Odometer
+    uint EngineHours
 );

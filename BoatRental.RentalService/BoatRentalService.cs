@@ -17,7 +17,7 @@ public class BoatRentalService(
          * attributes to the request object.
          */
 
-        if (!IsCarAvailable(request.CarRegistrationPlate))
+        if (!IsBoatAvailable(request.BoatRegistrationNumber))
         {
             throw new CarUnavailableException();
         }
@@ -28,17 +28,17 @@ public class BoatRentalService(
             throw new BookingNumberAlreadyUsedException();
         }
 
-        var BoatRental = new Rental
+        var boatRental = new Rental
         {
             BookingNumber = request.BookingNumber,
-            BoatRegistrationNumber = request.CarRegistrationPlate,
+            BoatRegistrationNumber = request.BoatRegistrationNumber,
             CustomerId = request.CustomerId,
             BoatType = request.BoatType,
             CheckoutDate = request.CheckoutDate,
-            EngineHours = request.Odometer,
+            EngineHours = request.EngineHours,
         };
 
-        boatRentalsRepository.SaveBoatRental(BoatRental);
+        boatRentalsRepository.SaveBoatRental(boatRental);
     }
 
     public virtual CarReturnResponse ReturnBoat(BoatReturnRequest request)
@@ -47,15 +47,15 @@ public class BoatRentalService(
 
         EnsureValidRequest(request, rental);
 
-        var distanceDriven = request.Odometer - rental.EngineHours;
-        var daysRented = CalculateRentalDays(rental.CheckoutDate, request.ReturnDate);
+        var distanceDriven = request.EngineHours - rental.EngineHours;
+        var hoursRented = CalculateRentalHours(rental.CheckoutDate, request.ReturnDate);
 
         var totalCost = priceService.CalculatePrice(
             rental.BoatType,
-            daysRented,
+            hoursRented,
             distanceDriven);
 
-        rental.ReturnOdometer = request.Odometer;
+        rental.ReturnOdometer = request.EngineHours;
         rental.ReturnDate = request.ReturnDate;
 
         boatRentalsRepository.SaveBoatRental(rental);
@@ -66,9 +66,9 @@ public class BoatRentalService(
             rental.CustomerId,
             rental.CheckoutDate,
             request.ReturnDate,
-            daysRented,
+            hoursRented,
             rental.EngineHours,
-            request.Odometer,
+            request.EngineHours,
             distanceDriven,
             totalCost);
     }
@@ -79,7 +79,7 @@ public class BoatRentalService(
     /// <param name="checkoutDate">Date for checkout</param>
     /// <param name="returnDate">Date for return</param>
     /// <returns>Positive integer of number of full days</returns>
-    public virtual uint CalculateRentalDays(DateTime checkoutDate, DateTime returnDate)
+    public virtual uint CalculateRentalHours(DateTime checkoutDate, DateTime returnDate)
     {
         if (checkoutDate > returnDate)
         {
@@ -88,13 +88,13 @@ public class BoatRentalService(
                 nameof(returnDate));
         }
 
-        return (uint)Math.Ceiling((returnDate - checkoutDate).TotalDays);
+        return (uint)Math.Ceiling((returnDate - checkoutDate).TotalHours);
     }
 
-    private bool IsCarAvailable(string carRegistrationPlate)
+    private bool IsBoatAvailable(string boatRegistrationNumber)
     {
         return !boatRentalsRepository
-            .GetBookingsForBoatAtDate(carRegistrationPlate, DateTime.UtcNow)
+            .GetBookingsForBoatAtDate(boatRegistrationNumber, DateTime.UtcNow)
             .Any();
     }
 
@@ -116,7 +116,7 @@ public class BoatRentalService(
     {
         if (IsReturned(rental))
         {
-            throw new CarAlreadyReturnedException();
+            throw new BoatAlreadyReturnedException();
         }
         
         if (request.ReturnDate < rental.CheckoutDate)
@@ -124,7 +124,7 @@ public class BoatRentalService(
             throw new InvalidReturnDateException();
         }
 
-        if (request.Odometer < rental.EngineHours)
+        if (request.EngineHours < rental.EngineHours)
         {
             throw new InvalidOdometerException();
         }

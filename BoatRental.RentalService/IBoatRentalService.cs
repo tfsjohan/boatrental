@@ -6,5 +6,5 @@ public interface IBoatRentalService
 
     CarReturnResponse ReturnBoat(BoatReturnRequest request);
 
-    uint CalculateRentalDays(DateTime checkoutDate, DateTime returnDate);
+    uint CalculateRentalHours(DateTime checkoutDate, DateTime returnDate);
 }

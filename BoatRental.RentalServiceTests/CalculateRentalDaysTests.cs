@@ -9,7 +9,7 @@ public class CalculateRentalDaysTests
         var service = new BoatRentalServiceBuilder().Build();
 
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => service.CalculateRentalDays(
+        Assert.Throws<ArgumentException>(() => service.CalculateRentalHours(
             DateTime.UtcNow.AddDays(1),
             DateTime.UtcNow
         ));
@@ -29,7 +29,7 @@ public class CalculateRentalDaysTests
         var service = new BoatRentalServiceBuilder().Build();
 
         // Act
-        var days = service.CalculateRentalDays(
+        var days = service.CalculateRentalHours(
             DateTime.Parse(checkoutDate),
             DateTime.Parse(returnDate)
         );

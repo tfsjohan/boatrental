@@ -4,8 +4,8 @@ namespace BoatRental.PriceService;
 
 public class DolcerivaPriceCalculator : IPriceCalculator
 {
-    public decimal CalculatePrice(BoatTypePriceDetails details, uint days, uint engineHours)
+    public decimal CalculatePrice(BoatTypePriceDetails details, uint hours, uint engineHours)
     {
-        return details.PricePerDay * days * 1.3M + details.PricePerKm * engineHours;
+        return details.PricePerHour * hours * 1.3M + details.PricePerEngineHour * engineHours;
     }
 }

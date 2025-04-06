@@ -36,11 +36,11 @@ app.MapPost("/checkoutboat", (
         {
             rentalService.CheckoutBoat(new BoatCheckoutRequest(
                 BookingNumber: request.BookingNumber,
-                CarRegistrationPlate: request.BoatRegistrationNumber,
+                BoatRegistrationNumber: request.BoatRegistrationNumber,
                 CustomerId: request.CustomerId,
                 BoatType: request.BoatType,
                 CheckoutDate: DateTime.UtcNow,
-                Odometer: request.EngineHours
+                EngineHours: request.EngineHours
             ));
 
             return Results.Ok(new RentalApiModels.CheckoutResponse()
@@ -68,7 +68,7 @@ app.MapPost("/returnboat", (
             var response = rentalService.ReturnBoat(new BoatReturnRequest(
                 BookingNumber: request.BookingNumber,
                 ReturnDate: DateTime.UtcNow,
-                Odometer: request.EngineHours
+                EngineHours: request.EngineHours
             ));
 
             return Results.Ok(

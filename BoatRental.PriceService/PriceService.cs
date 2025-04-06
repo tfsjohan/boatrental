@@ -5,7 +5,7 @@ namespace BoatRental.PriceService;
 
 public class PriceService(IBoatTypePriceRepository boatTypePriceRepository) : IPriceService
 {
-    public decimal CalculatePrice(BoatTypeEnum boatType, uint days, uint engineHours)
+    public decimal CalculatePrice(BoatTypeEnum boatType, uint hours, uint engineHours)
     {
         var details = boatTypePriceRepository.GetPriceDetails(boatType);
 
@@ -27,6 +27,6 @@ public class PriceService(IBoatTypePriceRepository boatTypePriceRepository) : IP
          */
         var calculator = PriceCalculatorFactory.CreatePriceCalculator(details.BoatType);
 
-        return calculator.CalculatePrice(details, days, engineHours);
+        return calculator.CalculatePrice(details, hours, engineHours);
     }
 }

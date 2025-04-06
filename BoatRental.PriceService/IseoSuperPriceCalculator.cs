@@ -4,8 +4,8 @@ namespace BoatRental.PriceService;
 
 public class IseoSuperPriceCalculator : IPriceCalculator
 {
-    public decimal CalculatePrice(BoatTypePriceDetails details, uint days, uint engineHours)
+    public decimal CalculatePrice(BoatTypePriceDetails details, uint hours, uint engineHours)
     {
-        return details.PricePerDay * days;
+        return details.PricePerHour * hours;
     }
 }

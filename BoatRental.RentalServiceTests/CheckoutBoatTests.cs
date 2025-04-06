@@ -6,7 +6,7 @@ using Moq;
 
 namespace BoatRental.RentalServiceTests;
 
-public class CheckoutCarTests
+public class CheckoutBoatTests
 {
     [Fact]
     public void Checkout_Should_MakeSureCarIsAvailable()

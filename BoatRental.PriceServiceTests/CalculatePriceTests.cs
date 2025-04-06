@@ -50,7 +50,8 @@ public class CalculatePriceTests
         var carTypePriceDetails = new BoatTypePriceDetails(
             boatType,
             pricePerDay,
-            pricePerKilometer
+            pricePerKilometer,
+            0
         );
 
         var priceRepository = new Mock<IBoatTypePriceRepository>();

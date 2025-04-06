@@ -6,7 +6,7 @@ using Moq;
 
 namespace BoatRental.RentalServiceTests;
 
-public class ReturnCarTests
+public class ReturnBoatTests
 {
     [Theory]
     [
@@ -293,7 +293,7 @@ public class ReturnCarTests
         service.ReturnBoat(request);
 
         // Assert
-        Assert.Equal(request.Odometer, rental.ReturnOdometer);
+        Assert.Equal(request.EngineHours, rental.ReturnOdometer);
         Assert.Equal(request.ReturnDate, rental.ReturnDate);
     }
 
@@ -332,6 +332,6 @@ public class ReturnCarTests
 
         // Act & Assert
 
-        Assert.Throws<CarAlreadyReturnedException>(() => service.ReturnBoat(request));
+        Assert.Throws<BoatAlreadyReturnedException>(() => service.ReturnBoat(request));
     }
 }
