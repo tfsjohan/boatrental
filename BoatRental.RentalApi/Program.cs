@@ -68,7 +68,7 @@ app.MapPost("/returnboat", (
             var response = rentalService.ReturnBoat(new BoatReturnRequest(
                 BookingNumber: request.BookingNumber,
                 ReturnDate: DateTime.UtcNow,
-                Odometer: request.Odometer
+                Odometer: request.EngineHours
             ));
 
             return Results.Ok(

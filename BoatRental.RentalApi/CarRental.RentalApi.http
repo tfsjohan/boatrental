@@ -7,20 +7,20 @@
 
 # Iseo Super
 
-POST {{BoatRental.RentalApi_HostAddress}}/checkoutcar/
+POST {{BoatRental.RentalApi_HostAddress}}/checkoutboat/
 Content-Type: application/json
 
 {
   "bookingNumber": "123456",
   "boatRegistrationNumber": "ABC123",
   "customerId": "123456",
-  "carType": 0,
+  "boatType": 0,
   "enginehours": 1000
 }
 
 ###
 
-POST {{BoatRental.RentalApi_HostAddress}}/returncar/
+POST {{BoatRental.RentalApi_HostAddress}}/returnboat/
 Content-Type: application/json
 
 {
@@ -32,20 +32,20 @@ Content-Type: application/json
 
 # Dolceriva
 
-POST {{BoatRental.RentalApi_HostAddress}}/checkoutcar/
+POST {{BoatRental.RentalApi_HostAddress}}/checkoutboat/
 Content-Type: application/json
 
 {
   "bookingNumber": "123457",
   "boatRegistrationNumber": "ABC123",
   "customerId": "123456",
-  "carType": 1,
+  "boatType": 1,
   "enginehours": 1000
 }
 
 ###
 
-POST {{BoatRental.RentalApi_HostAddress}}/returncar/
+POST {{BoatRental.RentalApi_HostAddress}}/returnboat/
 Content-Type: application/json
 
 {
@@ -57,20 +57,20 @@ Content-Type: application/json
 
 # Diable
 
-POST {{BoatRental.RentalApi_HostAddress}}/checkoutcar/
+POST {{BoatRental.RentalApi_HostAddress}}/checkoutboat/
 Content-Type: application/json
 
 {
   "bookingNumber": "123458",
   "boatRegistrationNumber": "ABC123",
   "customerId": "123456",
-  "carType": 0,
+  "boatType": 0,
   "enginehours": 1000
 }
 
 ###
 
-POST {{BoatRental.RentalApi_HostAddress}}/returncar/
+POST {{BoatRental.RentalApi_HostAddress}}/returnboat/
 Content-Type: application/json
 
 {

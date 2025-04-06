@@ -21,7 +21,7 @@ public class RentalApiModels
     {
         public required string BookingNumber { get; set; }
 
-        public required uint Odometer { get; set; }
+        public required uint EngineHours { get; set; }
     }
 
     public class CheckoutResponse
