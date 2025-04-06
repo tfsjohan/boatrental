@@ -1,0 +1,81 @@
+@BoatRental.RentalApi_HostAddress = http://localhost:5182
+
+# CarTypes
+# 0 - IseoSuper
+# 1 - Dolceriva
+# 2 - Diable
+
+# Iseo Super
+
+POST {{BoatRental.RentalApi_HostAddress}}/checkoutcar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123456",
+  "boatRegistrationNumber": "ABC123",
+  "customerId": "123456",
+  "carType": 0,
+  "enginehours": 1000
+}
+
+###
+
+POST {{BoatRental.RentalApi_HostAddress}}/returncar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123456",
+  "enginehours": 1200
+}
+
+###
+
+# Dolceriva
+
+POST {{BoatRental.RentalApi_HostAddress}}/checkoutcar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123457",
+  "boatRegistrationNumber": "ABC123",
+  "customerId": "123456",
+  "carType": 1,
+  "enginehours": 1000
+}
+
+###
+
+POST {{BoatRental.RentalApi_HostAddress}}/returncar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123457",
+  "enginehours": 1200
+}
+
+###
+
+# Diable
+
+POST {{BoatRental.RentalApi_HostAddress}}/checkoutcar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123458",
+  "boatRegistrationNumber": "ABC123",
+  "customerId": "123456",
+  "carType": 0,
+  "enginehours": 1000
+}
+
+###
+
+POST {{BoatRental.RentalApi_HostAddress}}/returncar/
+Content-Type: application/json
+
+{
+  "bookingNumber": "123458",
+  "enginehours": 1200
+}
+
+###

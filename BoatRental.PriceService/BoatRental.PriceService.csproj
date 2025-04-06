@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <RootNamespace>CarRental.PriceService</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\BoatRental.CommonTypes\BoatRental.CommonTypes.csproj" />
+      <ProjectReference Include="..\BoatRental.Data\BoatRental.Data.csproj" />
+    </ItemGroup>
+
+</Project>

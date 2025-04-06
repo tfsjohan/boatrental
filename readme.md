@@ -1,4 +1,4 @@
-# Car Rental System
+# Boat Rental System
 
 ## General info
 
