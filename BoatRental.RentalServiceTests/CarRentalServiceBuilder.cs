@@ -5,24 +5,24 @@ using Moq;
 
 namespace BoatRental.RentalServiceTests;
 
-public class CarRentalServiceBuilder
+public class BoatRentalServiceBuilder
 {
     private IBoatRentalsRepository _boatRentalsRepository;
     private IPriceService _priceService;
 
-    public CarRentalServiceBuilder()
+    public BoatRentalServiceBuilder()
     {
         _boatRentalsRepository = new Mock<IBoatRentalsRepository>().Object;
         _priceService = new Mock<IPriceService>().Object;
     }
 
-    public CarRentalServiceBuilder WithCarRentalsRepository(IBoatRentalsRepository boatRentalsRepository)
+    public BoatRentalServiceBuilder WithBoatRentalsRepository(IBoatRentalsRepository boatRentalsRepository)
     {
         _boatRentalsRepository = boatRentalsRepository;
         return this;
     }
 
-    public CarRentalServiceBuilder WithPriceService(IPriceService priceService)
+    public BoatRentalServiceBuilder WithPriceService(IPriceService priceService)
     {
         _priceService = priceService;
         return this;

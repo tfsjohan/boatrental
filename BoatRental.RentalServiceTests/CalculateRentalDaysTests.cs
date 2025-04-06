@@ -6,7 +6,7 @@ public class CalculateRentalDaysTests
     public void CalculateRentalDate_Should_ThrowIfReturnDateIsBeforeCheckoutDate()
     {
         // Arrange
-        var service = new CarRentalServiceBuilder().Build();
+        var service = new BoatRentalServiceBuilder().Build();
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() => service.CalculateRentalDays(
@@ -26,7 +26,7 @@ public class CalculateRentalDaysTests
         uint expectedDays)
     {
         // Arrange
-        var service = new CarRentalServiceBuilder().Build();
+        var service = new BoatRentalServiceBuilder().Build();
 
         // Act
         var days = service.CalculateRentalDays(

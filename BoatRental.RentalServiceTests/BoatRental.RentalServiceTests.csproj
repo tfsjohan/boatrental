@@ -7,7 +7,7 @@
 
         <IsPackable>false</IsPackable>
         <IsTestProject>true</IsTestProject>
-        <RootNamespace>CarRental.RentalServiceTests</RootNamespace>
+        <RootNamespace>BoatRental.RentalServiceTests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

@@ -64,8 +64,8 @@ public class CheckoutCarTests
             .Setup(x => x.GetBoatRental(bookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatCheckoutRequest(
@@ -82,7 +82,7 @@ public class CheckoutCarTests
     }
 
     [Fact]
-    public void Checkout_Should_SaveCarRental()
+    public void Checkout_Should_SaveBoatRental()
     {
         // Arrange 
         const string registrationPlate = "ABC123";
@@ -90,8 +90,8 @@ public class CheckoutCarTests
 
         var repository = new BoatRentalsRepository();
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository)
             .Build();
 
         var request = new BoatCheckoutRequest(

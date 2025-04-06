@@ -28,7 +28,7 @@ public class BoatRentalService(
             throw new BookingNumberAlreadyUsedException();
         }
 
-        var carRental = new Rental
+        var BoatRental = new Rental
         {
             BookingNumber = request.BookingNumber,
             BoatRegistrationNumber = request.CarRegistrationPlate,
@@ -38,7 +38,7 @@ public class BoatRentalService(
             EngineHours = request.Odometer,
         };
 
-        boatRentalsRepository.SaveBoatRental(carRental);
+        boatRentalsRepository.SaveBoatRental(BoatRental);
     }
 
     public virtual CarReturnResponse ReturnBoat(BoatReturnRequest request)

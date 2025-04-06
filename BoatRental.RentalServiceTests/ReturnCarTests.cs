@@ -37,8 +37,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
@@ -78,8 +78,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
@@ -118,8 +118,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
@@ -158,8 +158,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
@@ -195,8 +195,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
@@ -240,8 +240,8 @@ public class ReturnCarTests
             ))
             .Returns(100);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .WithPriceService(priceService.Object)
             .Build();
 
@@ -259,7 +259,7 @@ public class ReturnCarTests
     }
 
     [Fact]
-    public void ReturnCar_Should_UpdateCarRentalData()
+    public void ReturnCar_Should_UpdateBoatRentalData()
     {
         // Arrange
         const string bookingNumber = "123";
@@ -279,8 +279,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
@@ -320,8 +320,8 @@ public class ReturnCarTests
             .Setup(x => x.GetBoatRental(rental.BookingNumber))
             .Returns(rental);
 
-        var service = new CarRentalServiceBuilder()
-            .WithCarRentalsRepository(repository.Object)
+        var service = new BoatRentalServiceBuilder()
+            .WithBoatRentalsRepository(repository.Object)
             .Build();
 
         var request = new BoatReturnRequest(
