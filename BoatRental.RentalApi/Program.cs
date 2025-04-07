@@ -75,8 +75,8 @@ app.MapPost("/returnboat", (
                 new RentalApiModels.ReturnResponse()
                 {
                     BookingNumber = response.BookingNumber,
-                    BoatRegistrationNumber = response.CarRegistrationPlate,
-                    EngineHoursUsed = response.DistanceDriven,
+                    BoatRegistrationNumber = response.BoatRegistrationNumber,
+                    EngineHoursUsed = response.EngineHoursUsed,
                     TotalCost = response.TotalCost
                 }
             );
@@ -90,3 +90,6 @@ app.MapPost("/returnboat", (
     .WithOpenApi();
 
 app.Run();
+
+// Make the Program class public so it's accessible to tests
+public partial class Program { }

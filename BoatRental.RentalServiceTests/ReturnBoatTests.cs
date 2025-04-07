@@ -51,7 +51,7 @@ public class ReturnBoatTests
         var response = service.ReturnBoat(request);
 
         // Assert
-        Assert.Equal(expectedDistanceDriven, response.DistanceDriven);
+        Assert.Equal(expectedDistanceDriven, response.EngineHoursUsed);
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class ReturnBoatTests
         var response = service.ReturnBoat(request);
 
         // Assert
-        Assert.Equal(rentalDays, response.FullDaysRented);
+        Assert.Equal(rentalDays, response.FullHoursRented);
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class ReturnBoatTests
         var response = service.ReturnBoat(request);
 
         // Assert
-        Assert.Equal((uint)1, response.FullDaysRented);
+        Assert.Equal((uint)1, response.FullHoursRented);
     }
 
     [Fact]
@@ -206,7 +206,7 @@ public class ReturnBoatTests
         );
 
         // Act & Assert
-        Assert.Throws<InvalidOdometerException>(() => service.ReturnBoat(request));
+        Assert.Throws<InvalidEngineHoursException>(() => service.ReturnBoat(request));
     }
 
     [Fact]
@@ -293,7 +293,7 @@ public class ReturnBoatTests
         service.ReturnBoat(request);
 
         // Assert
-        Assert.Equal(request.EngineHours, rental.ReturnOdometer);
+        Assert.Equal(request.EngineHours, rental.ReturnEngineHours);
         Assert.Equal(request.ReturnDate, rental.ReturnDate);
     }
 
@@ -312,7 +312,7 @@ public class ReturnBoatTests
             CheckoutDate = DateTime.UtcNow.AddDays(-1),
             EngineHours = 0,
             ReturnDate = DateTime.UtcNow,
-            ReturnOdometer = 10
+            ReturnEngineHours = 10
         };
 
         var repository = new Mock<IBoatRentalsRepository>();

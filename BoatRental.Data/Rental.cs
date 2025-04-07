@@ -11,5 +11,5 @@ public class Rental()
     public required DateTime CheckoutDate { get; set; }
     public required uint EngineHours { get; set; }
     public DateTime? ReturnDate { get; set; }
-    public uint? ReturnOdometer { get; set; }
+    public uint? ReturnEngineHours { get; set; }
 };

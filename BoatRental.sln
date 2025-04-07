@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-#
+# 
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoatRental.RentalService", "BoatRental.RentalService\BoatRental.RentalService.csproj", "{B46A5578-9F48-4018-9746-66175722216F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoatRental.PriceService", "BoatRental.PriceService\BoatRental.PriceService.csproj", "{80AC9993-7B45-459D-AB56-B2EA743356F4}"
@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFolder", "SolutionF
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoatRental.RentalApi", "BoatRental.RentalApi\BoatRental.RentalApi.csproj", "{7767D819-3FF5-47C5-82DD-97629861FF17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoatRental.RentalApi.IntegrationTests", "BoatRental.RentalApi.IntegrationTests\BoatRental.RentalApi.IntegrationTests.csproj", "{73D7D3AB-C62B-4D2E-B4AA-D5E8DCB6665D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,5 +58,9 @@ Global
 		{7767D819-3FF5-47C5-82DD-97629861FF17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7767D819-3FF5-47C5-82DD-97629861FF17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7767D819-3FF5-47C5-82DD-97629861FF17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73D7D3AB-C62B-4D2E-B4AA-D5E8DCB6665D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73D7D3AB-C62B-4D2E-B4AA-D5E8DCB6665D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73D7D3AB-C62B-4D2E-B4AA-D5E8DCB6665D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73D7D3AB-C62B-4D2E-B4AA-D5E8DCB6665D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

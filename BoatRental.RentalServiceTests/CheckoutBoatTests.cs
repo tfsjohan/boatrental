@@ -41,7 +41,7 @@ public class CheckoutBoatTests
         );
 
         // Assert
-        Assert.Throws<CarUnavailableException>(() => service.CheckoutBoat(nextRequest));
+        Assert.Throws<BoatUnavailableException>(() => service.CheckoutBoat(nextRequest));
     }
 
     [Fact]

@@ -4,7 +4,7 @@ public interface IBoatRentalService
 {
     void CheckoutBoat(BoatCheckoutRequest request);
 
-    CarReturnResponse ReturnBoat(BoatReturnRequest request);
+    BoatReturnResponse ReturnBoat(BoatReturnRequest request);
 
     uint CalculateRentalHours(DateTime checkoutDate, DateTime returnDate);
 }
